@@ -1,0 +1,60 @@
+﻿@page "/"
+
+
+
+<br />
+
+<MudText Align="Align.Center" Typo="Typo.h4">To-do simples</MudText>
+<br />
+<br />
+
+<div style="display:flex; justify-content:center;">
+	<MudTextField Style="width:80%; align-self:center;" @bind-Value="tarefa" Placeholder="Digite sua tarefa" Variant="Variant.Outlined"></MudTextField>
+</div
+
+<br/>
+
+<div style="display:flex; justify-content:center;">
+	<MudButton Style="width:50%;" Variant="Variant.Outlined" Color="Color.Primary" @onclick="AdicionarTarefa">Adicionar tarefa</MudButton>
+</div
+
+<br />
+
+@if(sucessoAoAdicionarTarefa == true){
+	<MudAlert Severity="Severity.Success">Tarefa @tarefa2 adicionada</MudAlert>
+}
+@if(sucessoAoAdicionarTarefa == false){
+	<MudAlert Severity="Severity.Error">Erro ao adicionar tarefa @tarefa2, verifique se a mesma já não existe, ou se o campo está vázio </MudAlert>
+
+}
+
+
+
+
+@code{
+	public string tarefa { get; set; }
+	public string tarefa2 { get; set; }
+
+	[CascadingParameter]
+	public List<string> listaDeTarefas { get; set; } = [];
+
+	private bool? sucessoAoAdicionarTarefa = null;
+
+	public async Task AdicionarTarefa(){
+		if(!listaDeTarefas.Contains(tarefa) && !String.IsNullOrEmpty(tarefa)){
+			tarefa2 = tarefa;
+			tarefa = "";
+			sucessoAoAdicionarTarefa = true;
+			listaDeTarefas.Add(tarefa2);
+			TimeSpan delay = TimeSpan.FromSeconds(4);
+			await Task.Delay(delay);
+			sucessoAoAdicionarTarefa = null;
+		}
+		else{ sucessoAoAdicionarTarefa = false;
+			TimeSpan delay = TimeSpan.FromSeconds(4);
+			await Task.Delay(delay);
+			sucessoAoAdicionarTarefa = null;
+		}	
+
+	}
+}

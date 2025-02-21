@@ -1,0 +1,67 @@
+﻿<br />
+
+<MudText Align="Align.Center" Typo="Typo.h4">Tarefas</MudText>
+
+<br />
+
+@if(listaDeTarefas.Count() > 0){
+	@foreach (var tf in listaDeTarefas)
+	{
+		<MudText Align="Align.Center" Typo="Typo.h6">Tarefa: @tf</MudText>
+	}
+	<br/>
+	<div style="display:flex; justify-content:center; flex-direction:row">
+		<MudTextField Style="width:80%; align-self:center;" @bind-Value="removertarefa" Placeholder="Digite a tarefa a ser removida" Variant="Variant.Outlined"></MudTextField>
+	</div>
+	<br />
+	<div style="display:flex; justify-content:center; flex-direction:row">
+		<MudButton Style="width:50%;" Variant="Variant.Outlined" Color="Color.Primary" @onclick="RemoverTarefa">Remover tarefa</MudButton>
+	</div>
+	<br />
+	if(sucessoremovertarefa == true){
+		<MudAlert Severity="Severity.Success">Tarefa @removertarefa2 removida</MudAlert>
+	}
+	if (sucessoremovertarefa == false)
+	{
+		<MudAlert Severity="Severity.Error" Style="align-self:center">Tarefa não existe na lista, ou o campo está vázio</MudAlert>
+	}
+}
+else{
+	<MudText Align="Align.Center" Typo="Typo.h6">Lista vázia</MudText>
+}
+
+
+
+@code {
+	[CascadingParameter]
+	public List<string> listaDeTarefas { get; set; } = [];
+
+	private string removertarefa { get; set; }
+	private string removertarefa2 { get; set; }
+
+	private bool? sucessoremovertarefa = null;
+
+	public async Task RemoverTarefa(){
+
+		if (listaDeTarefas.Contains(removertarefa) && !String.IsNullOrEmpty(removertarefa))
+		{
+			listaDeTarefas.Remove(removertarefa);
+			sucessoremovertarefa = true;
+			removertarefa2 = removertarefa;
+			removertarefa = "";
+			TimeSpan delay = TimeSpan.FromSeconds(4);
+			await Task.Delay(delay);
+			sucessoremovertarefa = null;
+		}
+
+		else { 
+			sucessoremovertarefa = false;
+			TimeSpan delay = TimeSpan.FromSeconds(4);
+			await Task.Delay(delay);
+			sucessoremovertarefa = null;
+		
+		}
+
+	}
+
+}
