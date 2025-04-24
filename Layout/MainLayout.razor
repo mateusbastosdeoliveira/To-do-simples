@@ -1,0 +1,46 @@
+﻿@inherits LayoutComponentBase
+
+
+<MudThemeProvider  />
+
+<MudTabs @bind-ActivePanelIndex="@ActiveIndex" Centered="true" Color="Color.Surface">
+    <MudTabPanel @onclick="Adicionar"  Text="Adicionar tarefa" />
+    <MudTabPanel @onclick="Visualizar"  Text="Visualizar" />
+    @* <MudTabPanel Text="Three"  /> *@
+</MudTabs>
+
+@if(ComponeteAdicionar == true){
+    <CascadingValue Value="@listaDeTarefas">
+        <BlazorApp2Teste.Pages.Home />
+    </CascadingValue>
+
+
+}
+@if (ComponeteVisualizar == true)
+{
+
+    <CascadingValue Value="@listaDeTarefas">
+        <BlazorApp2Teste.Pages.Tarefas />
+    </CascadingValue>
+}
+
+
+@code{
+    [CascadingParameter]
+    public List<string> listaDeTarefas { get; set; } = [];
+
+    private int ActiveIndex { get; set; }
+    private  bool ComponeteAdicionar { get; set; } 
+    private bool ComponeteVisualizar { get; set; }
+
+    public void Adicionar(){
+        ComponeteAdicionar = true;
+        ComponeteVisualizar = false;
+    }
+
+    public void Visualizar()
+    {
+        ComponeteAdicionar = false;
+        ComponeteVisualizar = true;
+    }
+}
