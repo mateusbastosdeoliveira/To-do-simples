@@ -7,39 +7,35 @@
 @if(listaDeTarefas.Count() > 0){
 	@foreach (var tf in listaDeTarefas)
 	{
+
 		<MudText Align="Align.Center" Typo="Typo.h6">
-			Tarefa: @tf  <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="()=> RemoverTarefa(tf)"/>
+			Tarefa: @tf <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="()=>RemoverTarefa(tf)" />
 		</MudText>
 	}
 }
+
 else
 {
-	<MudText Typo="Typo.h6" Style="text-align:center;">Adicione uma tarefa</MudText>
-
+	<MudText Align="Align.Center" Typo="Typo.h6">Adicione uma tarefa</MudText>
 }
 
 
-@if (sucessoRemoverTarefa)
-{
-	<MudAlert Severity="Severity.Success">Tarefa removida</MudAlert>
 
-}
+
 
 
 @code {
 	[CascadingParameter]
 	public List<string> listaDeTarefas { get; set; } = [];
-	public bool sucessoRemoverTarefa = false;
 
-	public async Task RemoverTarefa(string tarefaASerRemovida)
-	{
 
+
+	public async Task RemoverTarefa(string tarefaASerRemovida){
 		listaDeTarefas.Remove(tarefaASerRemovida);
 		StateHasChanged();
-		sucessoRemoverTarefa = true;
-		TimeSpan delay = TimeSpan.FromSeconds(4);
-		await Task.Delay(delay);
-		sucessoRemoverTarefa = false;
-	}
+		}
+
+
+	
 
 }
