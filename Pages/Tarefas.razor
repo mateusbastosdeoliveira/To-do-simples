@@ -8,10 +8,11 @@
 	@foreach (var tf in listaDeTarefas)
 	{
 
-		<MudText Align="Align.Center" Typo="Typo.h6" Style="margin:5">
+		<MudText Align="Align.Center" Typo="Typo.h6" Style="margin:15">
 			Tarefa: @tf <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="()=>OnButtonClicked(tf)">Excluir</MudButton>
-
 		</MudText>
+		<br/>
+
 	}
 }
 
@@ -33,6 +34,7 @@ else
 
 
 
+
 	private async void OnButtonClicked(string tarefaASerRemovida)
 	{
 		bool? result = await DialogService.ShowMessageBox(
@@ -50,5 +52,6 @@ else
 	}
 
 	
+
 
 }
