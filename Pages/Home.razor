@@ -21,11 +21,11 @@
 <br />
 
 @if(tarefaAdicionada == true){
-	<MudAlert Severity="Severity.Success">Tarefa "@tarefa2" adicionada</MudAlert>
+	<MudAlert Severity="Severity.Success">Tarefa "@tarefa2.ToUpper()" adicionada</MudAlert>
 }
 
 @if(tarefaExistente == true){
-	<MudAlert Severity="Severity.Error">Tarefa "@tarefa" já existe na lista</MudAlert>
+	<MudAlert Severity="Severity.Error">Tarefa "@tarefa.ToUpper()" já existe na lista</MudAlert>
 }
 
 @if(tarefaNula == true){
@@ -47,21 +47,21 @@
 
 
 	public async Task AdicionarTarefa(){
-		if (string.IsNullOrEmpty(tarefa))
+		if (string.IsNullOrEmpty(tarefa.ToUpper()))
 		{
 			tarefaNula = true;
 			await Task.Delay(4000);
 			tarefaNula = false;
 		}
-		else if (listaDeTarefas.Contains(tarefa.Trim())){
+		else if (listaDeTarefas.Contains(tarefa.Trim().ToUpper())){
 			tarefaExistente = true;
 			await Task.Delay(4000);
 			tarefaExistente = false;
 		}
 		else
 		{
-			listaDeTarefas.Add(tarefa.Trim());
-			tarefa2 = tarefa;
+			listaDeTarefas.Add(tarefa.Trim().ToUpper());
+			tarefa2 = tarefa.ToUpper();
 			tarefa = "";
 			tarefaAdicionada = true;
 			await Task.Delay(4000);
