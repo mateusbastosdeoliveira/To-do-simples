@@ -4,38 +4,43 @@
 
 <br />
 
-@if(listaDeTarefas.Count() > 0){
+@if (listaDeTarefas.Count() > 0)
+{
 	@foreach (var tf in listaDeTarefas)
 	{
-
 		<MudText Align="Align.Center" Typo="Typo.h6">
-			Tarefa: @tf <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="()=>RemoverTarefa(tf)" />
+			Tarefa: @tf
+			<MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="() => OnButtonClicked(tf)">Delete</MudButton>
 		</MudText>
 	}
 }
-
 else
 {
 	<MudText Align="Align.Center" Typo="Typo.h6">Adicione uma tarefa</MudText>
 }
 
-
-
-
-
-
 @code {
 	[CascadingParameter]
 	public List<string> listaDeTarefas { get; set; } = [];
 
+	[Inject] private IDialogService DialogService { get; set; }
 
+	private async Task OnButtonClicked(string tarefa)
+	{
+		bool? result = await DialogService.ShowMessageBox(
+			"Confirmar Remoção",
+			$"Tem certeza que deseja remover a tarefa: '{tarefa}'?",
+			yesText: "Sim", cancelText: "Cancelar");
 
-	public async Task RemoverTarefa(string tarefaASerRemovida){
+		if (result == true)
+		{
+			await RemoverTarefa(tarefa);
+		}
+	}
+
+	public async Task RemoverTarefa(string tarefaASerRemovida)
+	{
 		listaDeTarefas.Remove(tarefaASerRemovida);
 		StateHasChanged();
-		}
-
-
-	
-
+	}
 }
