@@ -4,43 +4,51 @@
 
 <br />
 
-@if (listaDeTarefas.Count() > 0)
-{
+@if(listaDeTarefas.Count() > 0){
 	@foreach (var tf in listaDeTarefas)
 	{
-		<MudText Align="Align.Center" Typo="Typo.h6">
-			Tarefa: @tf
-			<MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="() => OnButtonClicked(tf)">Delete</MudButton>
+
+		<MudText Align="Align.Center" Typo="Typo.h6" Style="margin:5">
+			Tarefa: @tf <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="()=>OnButtonClicked(tf)">Excluir</MudButton>
+
 		</MudText>
 	}
 }
+
 else
 {
 	<MudText Align="Align.Center" Typo="Typo.h6">Adicione uma tarefa</MudText>
 }
 
+
+
+
+
+
 @code {
 	[CascadingParameter]
 	public List<string> listaDeTarefas { get; set; } = [];
-
 	[Inject] private IDialogService DialogService { get; set; }
+	string state = "Message box hasn't been opened yet";
 
-	private async Task OnButtonClicked(string tarefa)
+
+
+	private async void OnButtonClicked(string tarefaASerRemovida)
 	{
 		bool? result = await DialogService.ShowMessageBox(
-			"Confirmar Remoção",
-			$"Tem certeza que deseja remover a tarefa: '{tarefa}'?",
-			yesText: "Sim", cancelText: "Cancelar");
+			"Atenção!",
+			"Deseja remover tarefa?",
+			yesText: "Confirmar exclusão", cancelText: "Cancelar");
+		state = result == null ? "Cancelado" : "Deletado";
+		StateHasChanged();
 
-		if (result == true)
+		if (state == "Deletado")
 		{
-			await RemoverTarefa(tarefa);
+			listaDeTarefas.Remove(tarefaASerRemovida);	
+			StateHasChanged();
 		}
 	}
 
-	public async Task RemoverTarefa(string tarefaASerRemovida)
-	{
-		listaDeTarefas.Remove(tarefaASerRemovida);
-		StateHasChanged();
-	}
+	
+
 }
