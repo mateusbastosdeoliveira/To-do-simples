@@ -1,0 +1,84 @@
+﻿  @page "/"  
+
+
+
+ <br /> 
+
+ <h4 class="text-center">To-do simples</h4> 
+ <br /> 
+ <br /> 
+
+ <div style="display:flex; justify-content:center;"> 
+ 	<InputText style="width:80%; height:50px; align-self:center;" @bind-Value="tarefa" Placeholder="Digite sua tarefa" 
+     class="border border-2 border-primary text-center text-uppercase form-control"/> 
+ </div 
+
+ <br/> 
+
+ <div style="display:flex; justify-content:center;"> 
+<button class="btn border border-2 bg-primary text-light" @onclick="AdicionarTarefa">Adcionar tarefa</button> </div 
+
+ <br /> 
+
+ @if(tarefaAdicionada == true){ 
+<div class="alert alert-success" role="alert">
+  Tarefa "@tarefa2" adcionada
+</div>
+ } 
+
+ @if(tarefaExistente == true){ 
+     <div class="alert alert-warning" role="alert">
+  Tarefa "@tarefa" já existe na lista
+</div>
+ 	
+ } 
+
+ @if(tarefaNula == true){ 
+ 	    <div class="alert alert-warning" role="alert">
+Campo vázio</div>
+ } 
+
+
+ @code{ 
+
+ 	private string _tarefa; 
+ public string tarefa 
+ { 
+ 	get => _tarefa; 
+ 	set => _tarefa = value?.Trim().ToUpper(); 
+ } 
+ 	public string tarefa2 { get; set; } 
+
+ 	[CascadingParameter] 
+ 	public List<string> listaDeTarefas { get; set; } = []; 
+ 	private bool? tarefaAdicionada = null; 
+ 	private bool? tarefaNula = null; 
+ 	private bool? tarefaExistente = null; 
+
+
+
+ 	public async Task AdicionarTarefa(){ 
+ 		if (string.IsNullOrEmpty(tarefa)) 
+ 		{ 
+ 			tarefaNula = true; 
+ 			await Task.Delay(4000); 
+ 			tarefaNula = false; 
+ 		} 
+ 		else if (listaDeTarefas.Contains(tarefa)){ 
+ 			tarefaExistente = true; 
+ 			await Task.Delay(4000); 
+ 			tarefaExistente = false; 
+ 		} 
+ 		else  
+ 		{ 
+ 			listaDeTarefas.Add(tarefa); 
+ 			tarefa2 = tarefa; 
+ 			_tarefa = ""; 
+ 			tarefaAdicionada = true; 
+ 			await Task.Delay(4000); 
+ 			tarefaAdicionada = false; 
+ 		} 
+ 	} 
+ } 
+
+

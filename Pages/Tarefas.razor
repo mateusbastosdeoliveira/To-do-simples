@@ -1,0 +1,69 @@
+﻿@inject IJSRuntime JS
+
+<br />
+
+<h4 class="text-center">Tarefas</h4>
+
+
+<br /> 
+
+
+@if (listaDeTarefas.Count() > 0)
+{
+    <table class="table table-bordered text-center">
+        <thead class="table-primary">
+            <tr>
+                <th>Tarefa</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tf in listaDeTarefas)
+            {
+                <tr>
+                    <td>@tf</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" @onclick="() => RemoverTarefa(tf)">
+                            Excluir
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-center text-muted">Nenhuma tarefa cadastrada.</p>
+}
+
+
+
+
+
+<script>
+    window.confirmarExclusao = (mensagem) => confirm(mensagem);
+</script>
+
+
+ @code { 
+ 	[CascadingParameter] 
+ 	public List<string> listaDeTarefas { get; set; } = [];
+    private string? state;
+
+
+    private async void RemoverTarefa(string tarefaASerRemovida)
+    {
+        bool confirmado = await JS.InvokeAsync<bool>("confirmarExclusao", "Deseja remover a tarefa?");
+        state = confirmado ? "Deletado" : "Cancelado";
+        StateHasChanged();
+
+        if (confirmado)
+        {
+            listaDeTarefas.Remove(tarefaASerRemovida);
+            StateHasChanged();
+        }
+    }
+
+
+ } 

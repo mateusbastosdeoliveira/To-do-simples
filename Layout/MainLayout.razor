@@ -1,0 +1,50 @@
+﻿@inherits LayoutComponentBase
+
+<ul class="nav nav-pills nav-fill m-3">
+    <li class="nav-item">
+        <button class="btn nav-link border border-2 bg-primary text-light" aria-current="page" @onclick="Adicionar">Adicionar tarefa</button>
+    </li>
+    <li class="nav-item">
+        <button class="btn nav-link border border-2 bg-primary text-light" @onclick="Visualizar">Visualizar tarefa</button>
+    </li>
+
+
+</ul>
+
+@if(ComponeteAdicionar == true){
+    <CascadingValue Value="@listaDeTarefas">
+        <BlazorApp2Teste.Pages.Home />
+    </CascadingValue>
+
+
+}
+@if (ComponeteVisualizar == true)
+{
+
+    <CascadingValue Value="@listaDeTarefas">
+        <BlazorApp2Teste.Pages.Tarefas />
+    </CascadingValue>
+}
+
+
+@code{
+
+    [CascadingParameter]
+    public List<string> listaDeTarefas { get; set; } = [];
+
+    private int ActiveIndex { get; set; }
+
+    private bool ComponeteAdicionar { get; set; } = true;
+    private bool ComponeteVisualizar { get; set; }
+
+    public void Adicionar(){
+        ComponeteAdicionar = true;
+        ComponeteVisualizar = false;
+    }
+
+    public void Visualizar()
+    {
+        ComponeteAdicionar = false;
+        ComponeteVisualizar = true;
+    }
+}
